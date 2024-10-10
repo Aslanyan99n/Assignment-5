@@ -16,6 +16,7 @@ struct UsersGridView: View {
     var paddingHorizontal: CGFloat = 16
     var horizontalDistanceBetweenItems: CGFloat = 16
     var verticalDistanceBetweenItems: CGFloat = 32
+    var onTapAction: (User) -> Void
     var loadMoreAction: () -> Void
 
     var rowCount: Int {
@@ -51,6 +52,9 @@ struct UsersGridView: View {
             ForEach(users, id: \.self) { user in
                 UserView(user: user, width: realWidth, height: realHeight)
                     .frame(maxWidth: .infinity)
+                    .onTapGesture {
+                        onTapAction(user)
+                    }
                     .onAppear {
                         if user == users.last {
                             loadMoreAction()
@@ -64,5 +68,11 @@ struct UsersGridView: View {
 // MARK: - Preview
 
 #Preview {
-    UsersGridView(itemsCountInRow: .constant(2), users: [], width: 300, loadMoreAction: {})
+    UsersGridView(
+        itemsCountInRow: .constant(2),
+        users: [],
+        width: 300,
+        onTapAction: { _ in },
+        loadMoreAction: {}
+    )
 }

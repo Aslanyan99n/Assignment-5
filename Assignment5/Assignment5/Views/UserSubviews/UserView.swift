@@ -9,29 +9,27 @@ import NukeUI
 import SwiftUI
 
 struct UserView: View {
-    // MARK: - Body
+    // MARK: - Properties
+    
+    @AppStorage(String.Text.isDarkMode) var isDarkMode: Bool = false
 
     let user: User
     let width: CGFloat
     let height: CGFloat
 
-    var url: URL? {
-        guard let url = URL(string: user.picture?.large ?? "") else { return nil }
-        return url
-    }
+    // MARK: - Body
 
     var body: some View {
         VStack(spacing: 0) {
             image
             userInfoView
         } //: VSTACK
-        .cornerRadius(radius: 8, corners: .allCorners)
     }
 
     // MARK: - Image
 
     var image: some View {
-        LazyImage(url: url) { state in
+        LazyImage(url: user.imageURL) { state in
             if let image = state.image {
                 image
                     .resizable()
@@ -42,19 +40,21 @@ struct UserView: View {
         }
         .frame(width: abs(width), height: abs(height))
         .clipped(antialiased: true)
+        .cornerRadius(radius: 8, corners: .allCorners)
     }
-    
+
     // MARK: - UserInfoView
-    
+
     var userInfoView: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(user.getUserFullName())
+            Text(user.fullName)
                 .font(.headline)
-                .foregroundStyle(.black)
-            
-            Text(user.getUserLocationInfo())
+                .foregroundStyle(isDarkMode ? Color.white : Color.black)
+
+            Text(user.locationInfo)
                 .font(.subheadline)
-                .foregroundStyle(.black)
+                .foregroundStyle(isDarkMode ? Color.white : Color.black)
+
         } //: VSTACK
         .frame(height: 100)
     }
