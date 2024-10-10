@@ -13,10 +13,10 @@ struct UserInfoRow: View {
 
         var title: String {
             switch self {
-            case .gender: "Gender"
-            case .location: "Address"
-            case .phoneNumber: "Phone number"
-            case .email: "Email"
+            case .gender: String.Text.gender
+            case .location: String.Text.location
+            case .phoneNumber: String.Text.phoneNumber
+            case .email: String.Text.email
             }
         }
 
