@@ -26,17 +26,19 @@ struct User: Codable, Hashable {
     let location: Location?
     let phone: String?
     let picture: Picture?
-    
+    let email: String?
+
     // MARK: - Init
 
-    init(gender: String? = nil, name: Name? = nil, location: Location? = nil, phone: String? = nil, picture: Picture? = nil) {
+    init(gender: String? = nil, name: Name? = nil, location: Location? = nil, phone: String? = nil, picture: Picture? = nil, email: String? = nil) {
         self.gender = gender
         self.name = name
         self.location = location
         self.phone = phone
         self.picture = picture
+        self.email = email
     }
-    
+
     // MARK: - Functions
 
     func hash(into hasher: inout Hasher) {
@@ -46,24 +48,40 @@ struct User: Codable, Hashable {
         let hashString = fullName + phone + locationInfo
         hasher.combine(hashString)
     }
-    
-    func getUserFullName() -> String {
+
+    var fullName: String {
         let title = (name?.title ?? "")
         let firstName = (name?.first ?? "")
         let lastName = (name?.last ?? "")
         return title + " " + firstName + " " + lastName
     }
-    
-    func getUserLocationInfo() -> String {
+
+    var locationInfo: String {
         let street = (location?.street?.name ?? "") + " " + "\(location?.street?.number ?? 0)"
         let city = location?.city ?? ""
         let country = location?.country ?? ""
         return street + " " + city + " " + country
     }
 
-    func printUserInfo() {
-        Console.log("User: \(getUserFullName()),\nLocation: \(getUserLocationInfo())")
+    var imageURL: URL? {
+        guard let url = URL(string: picture?.large ?? "") else { return nil }
+        return url
     }
+
+    func printUserInfo() {
+        Console.log("User: \(fullName),\nLocation: \(locationInfo)")
+    }
+}
+
+extension User {
+    static let mockUser: User = .init(
+        gender: "Male",
+        name: .init(title: "Mr.", first: "John", last: "Smith"),
+        location: .init(street: .init(number: 1, name: "Street"), city: "Wilmington", state: "Deleware", country: "USA"),
+        phone: "1234567890",
+        picture: nil,
+        email: "wafaa.khodabaks@example.com"
+    )
 }
 
 // MARK: - Picture
@@ -81,7 +99,7 @@ struct Street: Codable {
     let name: String?
 }
 
-// MARK: - Locstion
+// MARK: - Location
 
 struct Location: Codable {
     let street: Street?
