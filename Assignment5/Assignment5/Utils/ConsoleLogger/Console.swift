@@ -13,7 +13,7 @@ struct Console {
 
     static func log(_ items: Any..., separator: String = " ", terminator: String = "\n") {
         let output = items.map { "🔓\n\($0)" }.joined(separator: separator)
-        let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "org.nextstack.propertyvision.ios", category: "custom_console_logger")
+        let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "Assignment5", category: "custom_console_logger")
         logger.log("This is a log message with a value: \(output)")
     }
 }

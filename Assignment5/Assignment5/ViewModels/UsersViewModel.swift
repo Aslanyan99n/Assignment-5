@@ -9,6 +9,30 @@ import Combine
 
 @MainActor
 final class UsersViewModel: ObservableObject {
+    enum Screen: Hashable, Identifiable {
+        case userDetails(viewModel: UserDetailsViewModel)
+        
+        var id: String {
+            switch self {
+            case .userDetails(let viewModel): Screen.userDetails(viewModel: viewModel).name
+            }
+        }
+        
+        var name: String {
+            switch self {
+            case .userDetails: "userDetails"
+            }
+        }
+        
+        static func == (lhs: UsersViewModel.Screen, rhs: UsersViewModel.Screen) -> Bool {
+            lhs.id == rhs.id
+        }
+                
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(self.id)
+        }
+    }
+    
     // MARK: - Properties
     
     @Published var isShowNetworkLog: Bool = false

@@ -28,8 +28,7 @@ final class Provider<T>: MoyaProvider<T> where T: MultiTargetType {
 
     func request<C>(_ target: Target) async throws -> C where C: Codable {
         return try await withCheckedThrowingContinuation { continuation in
-            self.request(target) { [weak self] result in
-                guard let self else { return }
+            self.request(target) { result in
                 switch result {
                 case let .success(response):
                     do {

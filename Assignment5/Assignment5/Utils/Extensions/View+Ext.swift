@@ -37,3 +37,29 @@ extension View {
         modifier(BlinkViewModifier(duration: duration))
     }
 }
+
+extension View {
+    @ViewBuilder func `if`<Content: View>(_ condition: @autoclosure () -> Bool, transform: (Self) -> Content) -> some View {
+        if condition() {
+            transform(self)
+        } else {
+            self
+        }
+    }
+}
+
+extension View {
+    func skeletonEffect(
+        isLoading: Binding<Bool>,
+        gradient: Gradient = SkeletonEffect.defaultGradient,
+        animation: Animation = SkeletonEffect.defaultAnimation
+    ) -> some View {
+        modifier(
+            SkeletonEffect(
+                isLoading: isLoading,
+                gradient: gradient,
+                animation: animation
+            )
+        )
+    }
+}
